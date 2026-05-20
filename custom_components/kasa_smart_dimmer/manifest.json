@@ -6,6 +6,6 @@
     "issue_tracker": "https://github.com/neznein9/Kasa-Smart-Dimmer-Add-on-for-Home-Assistant/issues",
     "dependencies": [ "tplink" ],
     "iot_class": "local_push",
-    "integration_type": "helper",
+    "integration_type": "integration",
     "codeowners": [ "@neznein9" ]
 }
