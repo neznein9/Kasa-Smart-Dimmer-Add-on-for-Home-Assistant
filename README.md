@@ -1,7 +1,7 @@
 [![GitHub Release](https://img.shields.io/github/v/release/neznein9/Kasa-Smart-Dimmer-Add-on-for-Home-Assistant)](https://github.com/neznein9/Kasa-Smart-Dimmer-Add-on-for-Home-Assistant/releases/latest)
-![GitHub License](https://img.shields.io/github/license/neznein9/Kasa-Smart-Dimmer-Add-on-for-Home-Assistant)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
-[![hacs](https://img.shields.io/badge/HACS-default-orange.svg)](https://hacs.xyz)
+[![GitHub License](https://img.shields.io/github/license/neznein9/Kasa-Smart-Dimmer-Add-on-for-Home-Assistant?cacheSeconds=60)](./LICENSE)
+[![hacs](https://img.shields.io/badge/HACS-default-green.svg)](https://hacs.xyz)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-blue.svg)](https://github.com/neznein9/Kasa-Smart-Dimmer-Add-on-for-Home-Assistant/pulls)
 
 <!-- [![GitHub watchers](https://img.shields.io/github/watchers/neznein9/Kasa-Smart-Dimmer-Add-on-for-Home-Assistant.svg?style=social&label=Watch)](https://GitHub.com/neznein9/Kasa-Smart-Dimmer-Add-on-for-Home-Assistant/watchers/)
 [![GitHub forks](https://img.shields.io/github/forks/neznein9/Kasa-Smart-Dimmer-Add-on-for-Home-Assistant.svg?style=social&label=Fork)](https://GitHub.com/neznein9/Kasa-Smart-Dimmer-Add-on-for-Home-Assistant/network/)
