@@ -15,9 +15,7 @@ from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers import entity_registry as er
 
 from kasa import Discover
-
-
-DOMAIN = "kasa_smart_dimmer"
+from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -38,8 +36,29 @@ SERVICE_SCHEMA = vol.Schema(
 )
 
 
+async def async_setup_entry(hass: HomeAssistant, entry: Any) -> bool:
+    """Set up Kasa Smart Dimmer from a config entry."""
+    _register_services(hass)
+    return True
+
+
+async def async_unload_entry(hass: HomeAssistant, entry: Any) -> bool:
+    """Unload a config entry."""
+    if hass.services.has_service(DOMAIN, SERVICE_SET_STANDBY_BRIGHTNESS):
+        hass.services.async_remove(DOMAIN, SERVICE_SET_STANDBY_BRIGHTNESS)
+
+    return True
+
+
 async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
     """Set up the Kasa Smart Dimmer integration."""
+    _register_services(hass)
+    return True
+
+
+def _register_services(hass: HomeAssistant) -> None:
+    if hass.services.has_service(DOMAIN, SERVICE_SET_STANDBY_BRIGHTNESS):
+        return
 
     async def handle_set_standby_brightness(call: ServiceCall) -> None:
         entity_id: str = call.data[ATTR_ENTITY_ID]
@@ -116,8 +135,6 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
         handle_set_standby_brightness,
         schema=SERVICE_SCHEMA,
     )
-
-    return True
 
 
 def _resolve_host_from_entity(
