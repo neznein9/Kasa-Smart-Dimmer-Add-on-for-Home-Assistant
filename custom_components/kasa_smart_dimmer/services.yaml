@@ -1,0 +1,28 @@
+set_standby_brightness:
+  name: Set standby brightness
+  description: Set brightness level without turning on the light.
+  fields:
+    entity_id:
+      required: true
+      selector:
+        entity:
+          domain: light
+
+    brightness:
+      required: true
+      selector:
+        number:
+          min: 0
+          max: 100
+          step: 1
+          mode: slider
+
+    host:
+      name: Host (IP address)
+      description: >
+        IP address of the Kasa device. Leave blank to auto-resolve from the
+        entity's device registry entry or an associated device_tracker.
+      required: false
+      advanced: true
+      selector:
+        text:

@@ -1,0 +1,165 @@
+"""Kasa Smart Dimmer integration."""
+
+from __future__ import annotations
+
+import logging
+from typing import Any
+
+import voluptuous as vol
+
+from homeassistant.const import ATTR_ENTITY_ID
+from homeassistant.core import HomeAssistant, ServiceCall
+from homeassistant.exceptions import HomeAssistantError
+from homeassistant.helpers import config_validation as cv
+from homeassistant.helpers import device_registry as dr
+from homeassistant.helpers import entity_registry as er
+
+from kasa import Discover
+
+
+DOMAIN = "kasa_smart_dimmer"
+
+_LOGGER = logging.getLogger(__name__)
+
+SERVICE_SET_STANDBY_BRIGHTNESS = "set_standby_brightness"
+
+ATTR_BRIGHTNESS = "brightness"
+ATTR_HOST = "host"
+
+SERVICE_SCHEMA = vol.Schema(
+    {
+        vol.Required(ATTR_ENTITY_ID): cv.entity_id,
+        vol.Required(ATTR_BRIGHTNESS): vol.All(
+            vol.Coerce(int),
+            vol.Range(min=0, max=100),
+        ),
+        vol.Optional(ATTR_HOST): cv.string,
+    }
+)
+
+
+async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
+    """Set up the Kasa Smart Dimmer integration."""
+
+    async def handle_set_standby_brightness(call: ServiceCall) -> None:
+        entity_id: str = call.data[ATTR_ENTITY_ID]
+        brightness: int = call.data[ATTR_BRIGHTNESS]
+        host: str | None = call.data.get(ATTR_HOST)
+
+        if not entity_id.startswith("light."):
+            raise HomeAssistantError(
+                f"{DOMAIN}.{SERVICE_SET_STANDBY_BRIGHTNESS} only supports light entities"
+            )
+
+        if host is None:
+            host = _resolve_host_from_entity(hass, entity_id)
+
+        if host is None:
+            raise HomeAssistantError(
+                f"Could not resolve host/IP address for {entity_id}. "
+                "Pass host explicitly or ensure the device has an associated device_tracker with an ip attribute."
+            )
+
+        _LOGGER.debug(
+            "Setting Kasa standby brightness for %s at %s to %s%%",
+            entity_id,
+            host,
+            brightness,
+        )
+
+        try:
+            device = await Discover.discover_single(host)
+
+            if device is None:
+                raise HomeAssistantError(f"No Kasa device discovered at {host}")
+
+            await device.update()
+
+            response = await device.protocol.query(
+                {
+                    "smartlife.iot.dimmer": {
+                        "set_brightness": {
+                            "brightness": brightness,
+                        }
+                    }
+                }
+            )
+
+            error_code = (
+                response
+                .get("smartlife.iot.dimmer", {})
+                .get("set_brightness", {})
+                .get("err_code")
+            )
+
+            if error_code != 0:
+                raise HomeAssistantError(
+                    f"Kasa set_brightness failed for {entity_id} at {host}: {response}"
+                )
+
+            _LOGGER.debug(
+                "Kasa standby brightness response for %s: %s",
+                entity_id,
+                response,
+            )
+
+        except HomeAssistantError:
+            raise
+        except Exception as err:
+            raise HomeAssistantError(
+                f"Failed setting standby brightness for {entity_id} at {host}: {err}"
+            ) from err
+
+    hass.services.async_register(
+        DOMAIN,
+        SERVICE_SET_STANDBY_BRIGHTNESS,
+        handle_set_standby_brightness,
+        schema=SERVICE_SCHEMA,
+    )
+
+    return True
+
+
+def _resolve_host_from_entity(
+    hass: HomeAssistant,
+    entity_id: str,
+) -> str | None:
+    """Resolve host/IP address from an entity."""
+
+    state = hass.states.get(entity_id)
+
+    if state is not None:
+        direct_host = state.attributes.get("host") or state.attributes.get("ip")
+
+        if direct_host is not None:
+            return str(direct_host)
+
+    entity_registry = er.async_get(hass)
+    device_registry = dr.async_get(hass)
+
+    entity_entry = entity_registry.async_get(entity_id)
+
+    if entity_entry is None or entity_entry.device_id is None:
+        return None
+
+    device_entry = device_registry.async_get(entity_entry.device_id)
+
+    if device_entry is None:
+        return None
+
+    for related_entity_entry in er.async_entries_for_device(
+        entity_registry,
+        device_entry.id,
+    ):
+        related_state = hass.states.get(related_entity_entry.entity_id)
+
+        if related_state is None:
+            continue
+
+        if related_entity_entry.entity_id.startswith("device_tracker."):
+            tracker_ip = related_state.attributes.get("ip")
+
+            if tracker_ip is not None:
+                return str(tracker_ip)
+
+    return None
