@@ -1,7 +1,7 @@
 {
     "domain": "kasa_smart_dimmer",
     "name": "Kasa Smart Dimmer",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "documentation": "https://github.com/neznein9/Kasa-Smart-Dimmer-Add-on-for-Home-Assistant",
     "issue_tracker": "https://github.com/neznein9/Kasa-Smart-Dimmer-Add-on-for-Home-Assistant/issues",
     "dependencies": [ "tplink" ],
