@@ -1,4 +1,4 @@
-[![GitHub Release](https://img.shields.io/github/release/neznein9/Kasa-Smart-Dimmer-Add-on-for-Home-Assistant)](https://github.com/neznein9/Kasa-Smart-Dimmer-Add-on-for-Home-Assistant/releases)
+[![GitHub Release](https://img.shields.io/github/v/release/neznein9/Kasa-Smart-Dimmer-Add-on-for-Home-Assistant)](https://github.com/neznein9/Kasa-Smart-Dimmer-Add-on-for-Home-Assistant/releases/latest)
 ![GitHub License](https://img.shields.io/github/license/neznein9/Kasa-Smart-Dimmer-Add-on-for-Home-Assistant)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 [![hacs](https://img.shields.io/badge/HACS-default-orange.svg)](https://hacs.xyz)
@@ -68,3 +68,6 @@ data:
   brightness: 35
   host: 192.168.1.123
 ```
+
+## Tested Devices
+- [x] [Kasa Smart Wi-Fi Light Switch, Dimmer - | KS220](https://www.kasasmart.com/us/products/smart-switches/kasa-smart-wifi-light-switch-dimmer-ks220)
