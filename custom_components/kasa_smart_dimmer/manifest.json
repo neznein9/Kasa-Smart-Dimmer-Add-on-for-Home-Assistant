@@ -1,11 +1,12 @@
 {
     "domain": "kasa_smart_dimmer",
     "name": "Kasa Smart Dimmer",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "documentation": "https://github.com/neznein9/Kasa-Smart-Dimmer-Add-on-for-Home-Assistant",
     "issue_tracker": "https://github.com/neznein9/Kasa-Smart-Dimmer-Add-on-for-Home-Assistant/issues",
     "dependencies": [ "tplink" ],
     "iot_class": "local_push",
     "integration_type": "integration",
+    "config_flow": true,
     "codeowners": [ "@neznein9" ]
 }
