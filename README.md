@@ -48,6 +48,8 @@ Copy the `custom_components/kasa_smart_dimmer` directory from this repo into you
 
 ## Usage
 
+![image](images/example_action.jpg)
+
 Use the action to set a dimmer's brightness without turning on the light:
 
 ```yaml
