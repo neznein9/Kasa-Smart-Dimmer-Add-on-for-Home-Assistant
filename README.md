@@ -72,4 +72,6 @@ data:
 ```
 
 ## Tested Devices
-- [x] [Kasa Smart Wi-Fi Light Switch, Dimmer - | KS220](https://www.kasasmart.com/us/products/smart-switches/kasa-smart-wifi-light-switch-dimmer-ks220)
+- [x] ✅ [Kasa Smart Wi-Fi Light Switch, Dimmer - | KS220](https://www.kasasmart.com/us/products/smart-switches/kasa-smart-wifi-light-switch-dimmer-ks220)
+- [ ] ⚠️ [Tapo S515D KIT Smart Wi-Fi Dimmer Light Switch, 3-Way Kit](https://www.tp-link.com/us/home-networking/smart-switch/tapo-s515d-kit/)
+  - Tested: Not working
