@@ -1,6 +1,9 @@
 set_standby_brightness:
   name: Set standby brightness
-  description: Set brightness level without turning on the light.
+  description: >
+    Sets the brightness level for a TP-Link dimmer. If the light is off,
+    the standby brightness is updated without turning the light on.
+    If the light is already on, the brightness is adjusted normally.
   fields:
     entity_id:
       required: true
@@ -17,13 +20,3 @@ set_standby_brightness:
           max: 100
           step: 1
           mode: slider
-
-    host:
-      name: Host (IP address)
-      description: >
-        IP address of the Kasa device. Leave blank to auto-resolve from the
-        entity's device registry entry or an associated device_tracker.
-      required: false
-      advanced: true
-      selector:
-        text:

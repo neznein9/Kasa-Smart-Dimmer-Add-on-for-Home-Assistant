@@ -3,20 +3,15 @@
 [![hacs](https://img.shields.io/badge/HACS-default-green.svg)](https://hacs.xyz)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-blue.svg)](https://github.com/neznein9/Kasa-Smart-Dimmer-Add-on-for-Home-Assistant/pulls)
 
-<!-- [![GitHub watchers](https://img.shields.io/github/watchers/neznein9/Kasa-Smart-Dimmer-Add-on-for-Home-Assistant.svg?style=social&label=Watch)](https://GitHub.com/neznein9/Kasa-Smart-Dimmer-Add-on-for-Home-Assistant/watchers/)
-[![GitHub forks](https://img.shields.io/github/forks/neznein9/Kasa-Smart-Dimmer-Add-on-for-Home-Assistant.svg?style=social&label=Fork)](https://GitHub.com/neznein9/Kasa-Smart-Dimmer-Add-on-for-Home-Assistant/network/)
-[![GitHub stars](https://img.shields.io/github/stars/neznein9/Kasa-Smart-Dimmer-Add-on-for-Home-Assistant.svg?style=social&label=Star)](https://GitHub.com/neznein9/Kasa-Smart-Dimmer-Add-on-for-Home-Assistant/stargazers/) -->
-
 
 
 # Kasa Smart Dimmer
 
 ## Integration for Home Assistant
 
+This is a custom integration for [Home Assistant](https://www.home-assistant.io/) that adds extra actions for dimmer switches from [Kasa Smart](https://www.kasasmart.com/) and [Tapo](https://www.tapo.com/). See the [list of tested devices](#tested-devices) below.
 
-This is a custom integration for [Home Assistant](https://www.home-assistant.io/) that adds extra actions for [Kasa Smart](https://www.kasasmart.com/) dimmer switches, such as the [KS220](https://www.kasasmart.com/us/products/smart-switches/kasa-smart-wifi-light-switch-dimmer-ks220).
-
-This is **not** a full replacement integration for Kasa devices. It is intended to work alongside the [TP-Link Smart Home](https://www.home-assistant.io/integrations/tplink/) integration to expose additional capabilities that Home Assistant does not currently surface.
+This is **not** a full replacement integration; it is intended to work alongside the [TP-Link Smart Home](https://www.home-assistant.io/integrations/tplink/) integration to expose additional capabilities that Home Assistant does not currently surface.
 
 
 ## Features
@@ -56,22 +51,11 @@ Use the action to set a dimmer's brightness without turning on the light:
 action: kasa_smart_dimmer.set_standby_brightness
 data:
   entity_id: light.en_suite_bathroom
-  brightness: 100
+  brightness: 90
 ```
 
-#### Optional override
 
-If the integration cannot automatically resolve the device IP address, you can pass host manually:
-
-```yaml
-action: kasa_smart_dimmer.set_standby_brightness
-data:
-  entity_id: light.en_suite_bathroom
-  brightness: 35
-  host: 192.168.1.123
-```
 
 ## Tested Devices
 - [x] ✅ [Kasa Smart Wi-Fi Light Switch, Dimmer - | KS220](https://www.kasasmart.com/us/products/smart-switches/kasa-smart-wifi-light-switch-dimmer-ks220)
-- [ ] ⚠️ [Tapo S515D KIT Smart Wi-Fi Dimmer Light Switch, 3-Way Kit](https://www.tp-link.com/us/home-networking/smart-switch/tapo-s515d-kit/)
-  - Tested: Not working
+- [x] ✅ [Tapo S515D KIT Smart Wi-Fi Dimmer Light Switch, 3-Way Kit](https://www.tp-link.com/us/home-networking/smart-switch/tapo-s515d-kit/)
