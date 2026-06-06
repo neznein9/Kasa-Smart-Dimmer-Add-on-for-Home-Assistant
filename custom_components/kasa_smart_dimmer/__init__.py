@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-import logging
+# import logging
 from typing import Any
 
 import voluptuous as vol
@@ -17,7 +17,7 @@ from homeassistant.helpers import entity_registry as er
 from kasa import Discover
 from .const import DOMAIN
 
-_LOGGER = logging.getLogger(__name__)
+# _LOGGER = logging.getLogger(__name__)
 
 SERVICE_SET_STANDBY_BRIGHTNESS = "set_standby_brightness"
 
@@ -63,34 +63,65 @@ def _register_services(hass: HomeAssistant) -> None:
     async def handle_set_standby_brightness(call: ServiceCall) -> None:
         entity_id: str = call.data[ATTR_ENTITY_ID]
         brightness: int = call.data[ATTR_BRIGHTNESS]
-        host: str | None = call.data.get(ATTR_HOST)
 
         if not entity_id.startswith("light."):
             raise HomeAssistantError(
                 f"{DOMAIN}.{SERVICE_SET_STANDBY_BRIGHTNESS} only supports light entities"
             )
 
-        if host is None:
-            host = _resolve_host_from_entity(hass, entity_id)
-
-        if host is None:
-            raise HomeAssistantError(
-                f"Could not resolve host/IP address for {entity_id}. "
-                "Pass host explicitly or ensure the device has an associated device_tracker with an ip attribute."
-            )
-
-        _LOGGER.debug(
-            "Setting Kasa standby brightness for %s at %s to %s%%",
-            entity_id,
-            host,
-            brightness,
-        )
-
         try:
+            #
+            # First try the modern TP-Link/Tapo path using the live device
+            # already managed by Home Assistant.
+            #
+            entity_components = hass.data.get("entity_components", {})
+            entity_component = entity_components.get("light")
+
+            if entity_component is not None:
+                entity = entity_component.get_entity(entity_id)
+
+                if (
+                    entity is not None
+                    and hasattr(entity, "coordinator")
+                    and hasattr(entity.coordinator, "device")
+                ):
+                    device = entity.coordinator.device
+
+                    await device.update()
+
+                    if "Brightness" in device.modules:
+                        # set_brightness() turns the light on.
+                        # Calling set_device_info with device_on=False updates the
+                        # standby brightness while keeping the relay off.
+                        await device.modules["Brightness"].call(
+                            "set_device_info",
+                            {
+                                "brightness": brightness,
+                                "device_on": False,
+                            }
+                        )
+
+                        return
+
+            #
+            # Fallback for legacy KS220 dimmers.
+            #
+            host: str | None = call.data.get(ATTR_HOST)
+
+            if host is None:
+                host = _resolve_host_from_entity(hass, entity_id)
+
+            if host is None:
+                raise HomeAssistantError(
+                    f"Could not resolve host/IP address for {entity_id}"
+                )
+
             device = await Discover.discover_single(host)
 
             if device is None:
-                raise HomeAssistantError(f"No Kasa device discovered at {host}")
+                raise HomeAssistantError(
+                    f"No Kasa device discovered at {host}"
+                )
 
             await device.update()
 
@@ -111,22 +142,17 @@ def _register_services(hass: HomeAssistant) -> None:
                 .get("err_code")
             )
 
-            if error_code != 0:
+            if error_code is not None and error_code != 0:
                 raise HomeAssistantError(
-                    f"Kasa set_brightness failed for {entity_id} at {host}: {response}"
+                    f"Kasa set_brightness failed for {entity_id}: {response}"
                 )
-
-            _LOGGER.debug(
-                "Kasa standby brightness response for %s: %s",
-                entity_id,
-                response,
-            )
 
         except HomeAssistantError:
             raise
+
         except Exception as err:
             raise HomeAssistantError(
-                f"Failed setting standby brightness for {entity_id} at {host}: {err}"
+                f"Failed setting standby brightness for {entity_id}: {err}"
             ) from err
 
     hass.services.async_register(
