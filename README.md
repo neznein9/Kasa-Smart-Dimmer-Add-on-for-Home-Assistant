@@ -1,5 +1,5 @@
 [![GitHub Release](https://img.shields.io/github/v/release/neznein9/Kasa-Smart-Dimmer-Add-on-for-Home-Assistant)](https://github.com/neznein9/Kasa-Smart-Dimmer-Add-on-for-Home-Assistant/releases/latest)
-[![GitHub License](https://img.shields.io/github/license/neznein9/Kasa-Smart-Dimmer-Add-on-for-Home-Assistant?cacheSeconds=60)](./LICENSE)
+[![GitHub License](https://img.shields.io/github/license/neznein9/Kasa-Smart-Dimmer-Add-on-for-Home-Assistant)](./LICENSE)
 [![hacs](https://img.shields.io/badge/HACS-default-green.svg)](https://hacs.xyz)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-blue.svg)](https://github.com/neznein9/Kasa-Smart-Dimmer-Add-on-for-Home-Assistant/pulls)
 
@@ -57,5 +57,9 @@ data:
 
 
 ## Tested Devices
-- [x] ✅ [Kasa Smart Wi-Fi Light Switch, Dimmer - | KS220](https://www.kasasmart.com/us/products/smart-switches/kasa-smart-wifi-light-switch-dimmer-ks220)
+- [x] ✅ [Kasa Smart KS220 - Smart Wi-Fi Dimmer Switch, HomeKit](https://www.kasasmart.com/us/products/smart-switches/kasa-smart-wifi-light-switch-dimmer-ks220)
+- [ ] ❔ [Kasa Smart KS225 - Smart Wi-Fi Dimmer Switch, Matter](https://www.kasasmart.com/us/products/smart-switches/kasa-smart-wifi-light-switch-dimmer-ks225)
+- [ ] ❔ [Tapo S500D Smart Wi-Fi Light Switch, Dimmer](https://www.tapo.com/us/product/smart-switch/tapo-s500d/)
+- [ ] ❔ [Tapo S505D Smart Wi-Fi Light Switch, Dimmer, Matter](https://www.tapo.com/us/product/smart-switch/tapo-s505d/)
 - [x] ✅ [Tapo S515D KIT Smart Wi-Fi Dimmer Light Switch, 3-Way Kit](https://www.tp-link.com/us/home-networking/smart-switch/tapo-s515d-kit/)
+
