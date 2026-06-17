@@ -63,3 +63,24 @@ data:
 - [ ] ❔ [Tapo S505D Smart Wi-Fi Light Switch, Dimmer, Matter](https://www.tapo.com/us/product/smart-switch/tapo-s505d/)
 - [x] ✅ [Tapo S515D KIT Smart Wi-Fi Dimmer Light Switch, 3-Way Kit](https://www.tp-link.com/us/home-networking/smart-switch/tapo-s515d-kit/)
 
+
+---
+
+## Development
+This integration is built on top of Home Assistant’s [TP-Link Smart Home](https://www.home-assistant.io/integrations/tplink/) integration and the [python-kasa](https://github.com/python-kasa/python-kasa) library. Many TP-Link devices expose additional functionality that is not visible in Home Assistant. Contributors interested in adding support for new devices or features are encouraged to inspect the live python-kasa device objects already managed by Home Assistant.
+
+A useful starting point is obtaining the underlying device through an entity’s coordinator:
+```
+entity = entity_component.get_entity(entity_id)
+device = entity.coordinator.device
+await device.update()
+```
+
+Then, inspect:
+```
+device.modules
+device.features
+device.internal_state
+```
+
+The modules collection is often the most valuable source of information. For example, legacy Kasa dimmers expose a `smartlife.iot.dimmer` module, while newer Tapo dimmers expose modules such as Brightness, Light, LightPreset, and LightTransition. Examining available modules, their methods, and the underlying protocol calls can reveal hidden functionality.
